@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Shortly - Custom URL Shortener",
+  "version": "1.0",
+  "description": "Create custom short links with a prefix. Type 'go/yourlink' to redirect to your saved URLs.",
+  "permissions": [
+    "storage",
+    "webNavigation",
+    "tabs",
+    "omnibox"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Shortly - Manage your short links"
+  },
+  "omnibox": {
+    "keyword": "go"
+  }
+} 

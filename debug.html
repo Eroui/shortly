@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shortly Debug Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+        }
+        .debug-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        .test-button {
+            display: inline-block;
+            padding: 10px 15px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+        }
+        .test-button:hover {
+            background: #5a6fd8;
+        }
+        .storage-info {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .error {
+            background: #ffe6e6;
+            color: #d63031;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .success {
+            background: #e6ffe6;
+            color: #00b894;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Shortly Extension Debug Page</h1>
+        
+        <div class="debug-section">
+            <h3>1. Check Extension Status</h3>
+            <button class="test-button" onclick="checkExtension()">Check if Extension is Loaded</button>
+            <div id="extension-status"></div>
+        </div>
+
+        <div class="debug-section">
+            <h3>2. Check Storage Contents</h3>
+            <button class="test-button" onclick="checkStorage()">Check Storage</button>
+            <div id="storage-info"></div>
+        </div>
+
+        <div class="debug-section">
+            <h3>3. Test Short Links</h3>
+            <p>Click these links to test if the extension intercepts them:</p>
+            <a href="go/test" class="test-button">go/test</a>
+            <a href="go/mylink" class="test-button">go/mylink</a>
+            <a href="go/github" class="test-button">go/github</a>
+            <div id="test-results"></div>
+        </div>
+
+        <div class="debug-section">
+            <h3>4. Manual URL Test</h3>
+            <p>Type a short link in the address bar and click this button to check if it was detected:</p>
+            <button class="test-button" onclick="checkCurrentUrl()">Check Current URL</button>
+            <div id="url-info"></div>
+        </div>
+
+        <div class="debug-section">
+            <h3>5. Console Debug</h3>
+            <p>Open Developer Tools (F12) and check the console for debug messages. You should see:</p>
+            <ul>
+                <li>"Shortly extension background script loaded"</li>
+                <li>"Tab updated with URL: [your-url]"</li>
+                <li>"Potential short link detected: [your-url]"</li>
+                <li>"Parsed prefix: [prefix] shortKey: [key]"</li>
+                <li>"Stored prefix: [prefix]"</li>
+                <li>"Available short links: [list of keys]"</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Check if extension is loaded
+        function checkExtension() {
+            const statusDiv = document.getElementById('extension-status');
+            
+            if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
+                chrome.runtime.sendMessage({action: 'getStorage'}, (response) => {
+                    if (chrome.runtime.lastError) {
+                        statusDiv.innerHTML = '<div class="error">Extension not found or not responding</div>';
+                    } else {
+                        statusDiv.innerHTML = '<div class="success">Extension is loaded and responding!</div>';
+                    }
+                });
+            } else {
+                statusDiv.innerHTML = '<div class="error">Chrome extension APIs not available</div>';
+            }
+        }
+
+        // Check storage contents
+        function checkStorage() {
+            const storageDiv = document.getElementById('storage-info');
+            
+            if (typeof chrome !== 'undefined' && chrome.storage) {
+                chrome.storage.sync.get(['prefix', 'shortLinks'], (result) => {
+                    storageDiv.innerHTML = '<div class="storage-info">' + JSON.stringify(result, null, 2) + '</div>';
+                });
+            } else {
+                storageDiv.innerHTML = '<div class="error">Chrome storage API not available</div>';
+            }
+        }
+
+        // Check current URL
+        function checkCurrentUrl() {
+            const urlDiv = document.getElementById('url-info');
+            const currentUrl = window.location.href;
+            
+            urlDiv.innerHTML = '<div class="storage-info">Current URL: ' + currentUrl + '</div>';
+            
+            // Check if it looks like a short link
+            if (currentUrl.includes('/') && !currentUrl.includes('://')) {
+                const parts = currentUrl.split('/');
+                if (parts.length >= 2) {
+                    urlDiv.innerHTML += '<div class="storage-info">Parsed as short link:\nPrefix: ' + parts[0] + '\nKey: ' + parts[1] + '</div>';
+                }
+            }
+        }
+
+        // Auto-check on page load
+        window.onload = function() {
+            setTimeout(() => {
+                checkExtension();
+                checkStorage();
+            }, 1000);
+        };
+    </script>
+</body>
+</html> 

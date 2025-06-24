@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shortly Icon Generator</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .icon-container { margin: 20px 0; }
+        canvas { border: 1px solid #ccc; margin: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Shortly Extension Icons</h1>
+    <p>Right-click on each canvas and "Save image as..." to download the icons.</p>
+    
+    <div class="icon-container">
+        <h3>16x16 Icon</h3>
+        <canvas id="icon16" width="16" height="16"></canvas>
+    </div>
+    
+    <div class="icon-container">
+        <h3>48x48 Icon</h3>
+        <canvas id="icon48" width="48" height="48"></canvas>
+    </div>
+    
+    <div class="icon-container">
+        <h3>128x128 Icon</h3>
+        <canvas id="icon128" width="128" height="128"></canvas>
+    </div>
+
+    <script>
+        function drawIcon(canvasId, size) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+            
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            
+            // Draw background circle
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size/2 - 2, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Draw white border
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = Math.max(1, size/64);
+            ctx.stroke();
+            
+            // Draw arrow
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = Math.max(2, size/16);
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            
+            const centerX = size/2;
+            const centerY = size/2;
+            const arrowLength = size/3;
+            
+            // Arrow line
+            ctx.beginPath();
+            ctx.moveTo(centerX - arrowLength/2, centerY);
+            ctx.lineTo(centerX + arrowLength/2, centerY);
+            ctx.stroke();
+            
+            // Arrow head
+            ctx.beginPath();
+            ctx.moveTo(centerX + arrowLength/2 - size/16, centerY - size/16);
+            ctx.lineTo(centerX + arrowLength/2, centerY);
+            ctx.lineTo(centerX + arrowLength/2 - size/16, centerY + size/16);
+            ctx.stroke();
+            
+            // Add small dots for visual interest
+            const dotSize = Math.max(1, size/32);
+            ctx.fillStyle = 'white';
+            ctx.globalAlpha = 0.8;
+            
+            // Top left dot
+            ctx.beginPath();
+            ctx.arc(centerX - arrowLength/2, centerY - arrowLength/2, dotSize, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Bottom left dot
+            ctx.beginPath();
+            ctx.arc(centerX - arrowLength/2, centerY + arrowLength/2, dotSize, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Top right dot (smaller)
+            ctx.globalAlpha = 0.6;
+            ctx.beginPath();
+            ctx.arc(centerX + arrowLength/2, centerY - arrowLength/2, dotSize * 0.8, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.globalAlpha = 1.0;
+        }
+        
+        // Generate all icons
+        window.onload = function() {
+            drawIcon('icon16', 16);
+            drawIcon('icon48', 48);
+            drawIcon('icon128', 128);
+        };
+    </script>
+</body>
+</html> 

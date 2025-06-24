@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shortly - Custom URL Shortener</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Shortly</h1>
+            <p>Manage your custom short links</p>
+        </header>
+
+        <div class="settings-section">
+            <label for="prefix">Prefix:</label>
+            <input type="text" id="prefix" placeholder="go" maxlength="10">
+            <button id="savePrefix" class="btn btn-primary">Save Prefix</button>
+        </div>
+
+        <div class="add-section">
+            <h3>Add New Short Link</h3>
+            <div class="form-group">
+                <label for="shortKey">Short Key:</label>
+                <input type="text" id="shortKey" placeholder="mylink" maxlength="50">
+            </div>
+            <div class="form-group">
+                <label for="targetUrl">Target URL:</label>
+                <input type="url" id="targetUrl" placeholder="https://example.com" maxlength="500">
+            </div>
+            <button id="addLink" class="btn btn-success">Add Link</button>
+        </div>
+
+        <div class="links-section">
+            <h3>Your Short Links</h3>
+            <div id="linksList" class="links-list">
+                <!-- Links will be populated here -->
+            </div>
+        </div>
+
+        <div class="usage-section">
+            <h3>How to Use</h3>
+            <p>Type <code id="usageExample">go</code> in your address bar, press <strong>Tab</strong>, then type your short key (e.g., <code>mylink</code>), and press <strong>Enter</strong> to use your short links.</p>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html> 

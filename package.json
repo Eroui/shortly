@@ -1,0 +1,26 @@
+{
+  "name": "shortly-chrome-extension",
+  "version": "1.0.0",
+  "description": "A Chrome extension for creating custom short links with a configurable prefix",
+  "main": "manifest.json",
+  "scripts": {
+    "build": "echo 'No build process required for Chrome extension'",
+    "test": "echo 'Open generate_icons.html in browser to generate icons'"
+  },
+  "keywords": [
+    "chrome-extension",
+    "url-shortener",
+    "short-links",
+    "browser-extension"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/shortly-chrome-extension.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/shortly-chrome-extension/issues"
+  },
+  "homepage": "https://github.com/yourusername/shortly-chrome-extension#readme"
+} 
