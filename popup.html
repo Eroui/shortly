@@ -26,7 +26,10 @@
             </div>
             <div class="form-group">
                 <label for="targetUrl">Target URL:</label>
-                <input type="url" id="targetUrl" placeholder="https://example.com" maxlength="500">
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <input type="url" id="targetUrl" placeholder="https://example.com" maxlength="500" style="flex:1;">
+                    <button type="button" id="useCurrentUrl" class="btn btn-primary" style="padding: 8px 10px;">Use Current URL</button>
+                </div>
             </div>
             <button id="addLink" class="btn btn-success">Add Link</button>
         </div>

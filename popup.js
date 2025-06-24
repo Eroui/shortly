@@ -4,6 +4,7 @@ const targetUrlInput = document.getElementById('targetUrl');
 const addLinkBtn = document.getElementById('addLink');
 const linksList = document.getElementById('linksList');
 const usageExample = document.getElementById('usageExample');
+const useCurrentUrlBtn = document.getElementById('useCurrentUrl');
 
 // Default prefix
 const DEFAULT_PREFIX = 'go';
@@ -66,14 +67,21 @@ function updateUsageExample() {
 function setupEventListeners() {
     // Add short link
     addLinkBtn.addEventListener('click', addShortLink);
-    
+    // Use current URL
+    useCurrentUrlBtn.addEventListener('click', async () => {
+        // Get the current active tab's URL
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+            if (tabs && tabs[0] && tabs[0].url) {
+                targetUrlInput.value = tabs[0].url;
+            }
+        });
+    });
     // Enter key support
     shortKeyInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             targetUrlInput.focus();
         }
     });
-    
     targetUrlInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             addShortLink();
