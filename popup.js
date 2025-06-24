@@ -1,6 +1,4 @@
 // DOM elements
-const prefixInput = document.getElementById('prefix');
-const savePrefixBtn = document.getElementById('savePrefix');
 const shortKeyInput = document.getElementById('shortKey');
 const targetUrlInput = document.getElementById('targetUrl');
 const addLinkBtn = document.getElementById('addLink');
@@ -12,18 +10,9 @@ const DEFAULT_PREFIX = 'go';
 
 // Initialize popup
 document.addEventListener('DOMContentLoaded', async () => {
-    await loadSettings();
     await loadShortLinks();
     setupEventListeners();
 });
-
-// Load saved settings
-async function loadSettings() {
-    const settings = await chrome.storage.sync.get(['prefix']);
-    const prefix = settings.prefix || DEFAULT_PREFIX;
-    prefixInput.value = prefix;
-    updateUsageExample(prefix);
-}
 
 // Load and display short links
 async function loadShortLinks() {
@@ -69,15 +58,12 @@ function createLinkItem(key, url) {
 }
 
 // Update usage example
-function updateUsageExample(prefix) {
-    usageExample.textContent = `${prefix}/mylink`;
+function updateUsageExample() {
+    usageExample.textContent = `go/mylink`;
 }
 
 // Setup event listeners
 function setupEventListeners() {
-    // Save prefix
-    savePrefixBtn.addEventListener('click', savePrefix);
-    
     // Add short link
     addLinkBtn.addEventListener('click', addShortLink);
     
@@ -93,31 +79,6 @@ function setupEventListeners() {
             addShortLink();
         }
     });
-}
-
-// Save prefix
-async function savePrefix() {
-    const prefix = prefixInput.value.trim();
-    
-    if (!prefix) {
-        alert('Please enter a prefix');
-        return;
-    }
-    
-    // Validate prefix (alphanumeric and hyphens only)
-    if (!/^[a-zA-Z0-9-]+$/.test(prefix)) {
-        alert('Prefix can only contain letters, numbers, and hyphens');
-        return;
-    }
-    
-    await chrome.storage.sync.set({ prefix });
-    updateUsageExample(prefix);
-    
-    // Show success feedback
-    savePrefixBtn.textContent = 'Saved!';
-    setTimeout(() => {
-        savePrefixBtn.textContent = 'Save Prefix';
-    }, 2000);
 }
 
 // Add short link

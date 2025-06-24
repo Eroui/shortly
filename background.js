@@ -8,9 +8,8 @@ chrome.omnibox.onInputEntered.addListener((text, disposition) => {
     const parts = text.split('/');
     key = parts[1] || parts[0];
   }
-  // Get stored settings
-  chrome.storage.sync.get(['prefix', 'shortLinks'], (result) => {
-    const storedPrefix = result.prefix || 'go';
+  // Get stored settings (no longer need prefix)
+  chrome.storage.sync.get(['shortLinks'], (result) => {
     const shortLinks = result.shortLinks || {};
     // Check if this matches a short key
     if (shortLinks[key]) {
