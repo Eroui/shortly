@@ -5,12 +5,9 @@
   "description": "Create custom short links with a prefix. Type 'go/yourlink' to redirect to your saved URLs.",
   "permissions": [
     "storage",
-    "webNavigation",
     "tabs",
-    "omnibox"
-  ],
-  "host_permissions": [
-    "<all_urls>"
+    "omnibox",
+    "activeTab"
   ],
   "background": {
     "service_worker": "background.js"

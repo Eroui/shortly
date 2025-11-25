@@ -43,17 +43,34 @@ function createLinkItem(key, url) {
     const linkItem = document.createElement('div');
     linkItem.className = 'link-item';
     
-    linkItem.innerHTML = `
-        <div class="link-info">
-            <div class="link-key">${key}</div>
-            <div class="link-url">${url}</div>
-        </div>
-        <button class="btn btn-danger" data-key="${key}">Delete</button>
-    `;
+    // Create link info container
+    const linkInfo = document.createElement('div');
+    linkInfo.className = 'link-info';
     
-    // Add delete functionality
-    const deleteBtn = linkItem.querySelector('.btn-danger');
+    // Create and set link key (safe - already validated)
+    const linkKey = document.createElement('div');
+    linkKey.className = 'link-key';
+    linkKey.textContent = key;
+    
+    // Create and set link URL (safe - using textContent prevents XSS)
+    const linkUrl = document.createElement('div');
+    linkUrl.className = 'link-url';
+    linkUrl.textContent = url;
+    
+    // Assemble link info
+    linkInfo.appendChild(linkKey);
+    linkInfo.appendChild(linkUrl);
+    
+    // Create delete button
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'btn btn-danger';
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.dataset.key = key;
     deleteBtn.addEventListener('click', () => deleteShortLink(key));
+    
+    // Assemble link item
+    linkItem.appendChild(linkInfo);
+    linkItem.appendChild(deleteBtn);
     
     return linkItem;
 }
